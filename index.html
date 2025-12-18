@@ -3,98 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECHURLS | 7 Columns Edition</title>
+    <title>TECHURLS | 7 Columns</title>
     <style>
-        :root {
-            --bg-color: #fcfcfc;
-            --text-color: #333;
-            --link-color: #0055aa;
-            --header-bg: #1a1a1a;
-        }
-
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0; padding: 0;
-            font-size: 13px;
-        }
-
-        /* 顶部导航 */
-        header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 8px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky; top: 0; z-index: 1000;
-        }
-
-        header h1 { font-size: 16px; margin: 0; letter-spacing: 1px; font-weight: 900; }
-
-        .search-container input {
-            background: #333; border: 1px solid #444; color: #eee;
-            padding: 4px 8px; font-size: 12px; border-radius: 3px; width: 180px;
-        }
-
-        /* 核心网格：针对 7 张卡片优化 */
-        .main-container {
-            display: grid;
-            /* 设定每列宽度，确保在大屏幕下整齐排布 */
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 25px;
-            max-width: 1400px; /* 限制最大宽度，防止 7 张卡片在一行拉得太长 */
-            margin: 0 auto;
-        }
-
-        /* 站点卡片样式 */
-        .site-column { 
-            border-top: 4px solid #333; 
-            padding-top: 8px; 
-            min-height: 200px;
-        }
-
-        .site-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .site-name { font-weight: 800; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; }
-        .site-domain { font-size: 10px; color: #999; }
-        
+        :root { --bg-color: #fcfcfc; --header-bg: #1a1a1a; --link-color: #0055aa; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg-color); margin: 0; font-size: 13px; }
+        header { background: var(--header-bg); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .main-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 20px; }
+        .site-column { border-top: 4px solid #333; padding-top: 8px; margin-bottom: 20px; }
+        .site-name { font-weight: 800; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; display: block; margin-bottom: 8px; }
         .article-list { list-style: none; padding: 0; margin: 0; }
-        .article-item { margin-bottom: 6px; display: flex; line-height: 1.3; align-items: flex-start; }
-        .time-badge { font-size: 10px; color: #999; min-width: 32px; margin-right: 8px; font-family: monospace; }
+        .article-item { margin-bottom: 6px; display: flex; line-height: 1.3; }
+        .time-badge { font-size: 10px; color: #999; min-width: 32px; font-family: monospace; }
         .article-link { text-decoration: none; color: var(--link-color); }
-        .article-link:hover { text-decoration: underline; background: #f0f7ff; }
-
-        .hidden { display: none !important; }
-        #loading { text-align: center; padding: 50px; }
+        #error-msg { color: red; text-align: center; padding: 20px; display: none; }
+        #loading { text-align: center; padding: 50px; color: #666; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>TECHURLS</h1>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Filter news...">
-    </div>
-</header>
+<header><h1>TECHURLS</h1></header>
 
 <div id="loading">正在加载 7 个垂直领域资讯...</div>
+<div id="error-msg"></div>
 <div class="main-container" id="content-grid"></div>
 
 <script>
     async function loadNews() {
+        const grid = document.getElementById('content-grid');
+        const loader = document.getElementById('loading');
+        const errorEl = document.getElementById('error-msg');
+
+        // 尝试加载数据的路径，加上时间戳防止浏览器缓存旧数据
+        const dataPath = './data/data.json?t=' + new Date().getTime();
+
         try {
-            const response = await fetch('./data/data.json');
+            console.log("正在尝试请求数据: ", dataPath);
+            const response = await fetch(dataPath);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP 错误! 状态码: ${response.status} (检查 data/data.json 是否存在)`);
+            }
+
             const data = await response.json();
-            
-            // 关键：只取前 7 个站点数据（或者确保你的 JSON 里只有 7 个）
-            const displayData = data.slice(0, 7);
-            
-            document.getElementById('loading').style.display = 'none';
-            const grid = document.getElementById('content-grid');
-            
-            grid.innerHTML = displayData.map(site => `
+            console.log("解析成功，数据长度: ", data.length);
+
+            if (!Array.isArray(data)) {
+                throw new Error("JSON 格式错误：最外层应该是 [ ] 数组格式。");
+            }
+
+            loader.style.display = 'none';
+            grid.innerHTML = data.map(site => `
                 <div class="site-column">
-                    <div class="site-header">
-                        <a href="${site.url ||
+                    <a href="${site.url || '#'}" class="site-name">${site.source}</a>
+                    <ul class="article-list">
+                        ${site.articles.map(art => `
+                            <li class="article-item">
+                                <span class="time-badge">${art.time || '1h'}</span>
+                                <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+        } catch (e) {
+            console.error("加载失败原因: ", e);
+            loader.style.display = 'none';
+            errorEl.style.display = 'block';
+            errorEl.innerHTML = `加载失败: ${e.message}<br><small>请确保 data 文件夹内有 data.json 且内容为合法的 JSON 数组。</small>`;
+        }
+    }
+
+    window.onload = loadNews;
+</script>
+</body>
+</html>
