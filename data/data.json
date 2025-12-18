@@ -3,31 +3,63 @@
     "source": "eVTOL News",
     "domain": "evtol.news",
     "articles": [
-      {
-        "title": "Archer and Southwest Airlines Partner on Electric Air Taxi Networks",
-        "link": "https://evtol.news/news/archer-southwest-airlines-partner",
-        "time": "3h"
-      },
-      {
-        "title": "Joby Receives Authorization for Elevate Flight Operations",
-        "link": "https://evtol.news/news/joby-elevate-authorization",
-        "time": "5h"
-      },
-      {
-        "title": "Lilium Expands to French Riviera with New Vertiport Partners",
-        "link": "https://evtol.news/news/lilium-french-riviera",
-        "time": "12h"
-      },
-      {
-        "title": "EHang Obtains First Airworthiness Certificate for Pilotless eVTOL",
-        "link": "https://evtol.news/news/ehang-certification-success",
-        "time": "1d"
-      },
-      {
-        "title": "Beta Technologies Opens New Electric Aircraft Production Facility",
-        "link": "https://evtol.news/news/beta-production-facility",
-        "time": "2d"
-      }
+      { "title": "Joby Aviation Receives FAA Authorization", "link": "https://evtol.news", "time": "2h" },
+      { "title": "Archer Midnight Completes Phase 1 Flight Test", "link": "https://evtol.news", "time": "5h" },
+      { "title": "Lilium Expands Production Capacity in Germany", "link": "https://evtol.news", "time": "8h" }
+    ]
+  },
+  {
+    "source": "Vertical Mag",
+    "domain": "verticalmag.com",
+    "articles": [
+      { "title": "Airbus Helicopters sees strong demand for H145", "link": "#", "time": "1h" },
+      { "title": "EHang expands flight operations in UAE", "link": "#", "time": "4h" },
+      { "title": "The future of heavy-lift cargo drones", "link": "#", "time": "12h" }
+    ]
+  },
+  {
+    "source": "Hacker News",
+    "domain": "ycombinator.com",
+    "articles": [
+      { "title": "Show HN: A terminal-based eVTOL tracker", "link": "#", "time": "30m" },
+      { "title": "Why electric aviation is harder than cars", "link": "#", "time": "3h" },
+      { "title": "The physics of distributed electric propulsion", "link": "#", "time": "7h" }
+    ]
+  },
+  {
+    "source": "The Verge",
+    "domain": "theverge.com",
+    "articles": [
+      { "title": "Review: Flying in a pilotless air taxi", "link": "#", "time": "1h" },
+      { "title": "NASA's X-57 Maxwell project updates", "link": "#", "time": "6h" },
+      { "title": "Best tech for sustainable travel 2025", "link": "#", "time": "1d" }
+    ]
+  },
+  {
+    "source": "FlightGlobal",
+    "domain": "flightglobal.com",
+    "articles": [
+      { "title": "Embraer’s Eve targets 2026 for entry into service", "link": "#", "time": "2h" },
+      { "title": "Rolls-Royce completes tests on hybrid engine", "link": "#", "time": "9h" },
+      { "title": "Global air traffic hits new post-pandemic high", "link": "#", "time": "15h" }
+    ]
+  },
+  {
+    "source": "TechCrunch",
+    "domain": "techcrunch.com",
+    "articles": [
+      { "title": "Volocopter secures $100M in Series E funding", "link": "#", "time": "3h" },
+      { "title": "Beta Technologies raises massive round for chargers", "link": "#", "time": "10h" },
+      { "title": "Startup of the week: Autonomous cargo flight", "link": "#", "time": "2d" }
+    ]
+  },
+  {
+    "source": "Wired",
+    "domain": "wired.com",
+    "articles": [
+      { "title": "Inside the quietest aircraft ever built", "link": "#", "time": "5h" },
+      { "title": "Batteries are finally light enough for short flights", "link": "#", "time": "1d" },
+      { "title": "The city of the future is built around vertiports", "link": "#", "time": "3d" }
     ]
   }
 ]
