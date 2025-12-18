@@ -3,156 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECHURLS | 3-Column Edition</title>
+    <title>TECHURLS | 3-Columns</title>
     <style>
-        :root {
-            --bg-color: #fcfcfc;
-            --header-bg: #1a1a1a;
-            --link-color: #0055aa;
-            --text-main: #333;
-            --text-muted: #999;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            font-size: 13px;
-        }
-
-        /* 顶部导航：确保搜索框居右显示 */
-        header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 8px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: 35px;
-        }
-
-        header h1 {
-            font-size: 16px;
-            margin: 0;
-            letter-spacing: 1px;
-            font-weight: 900;
-            cursor: pointer;
-        }
-
-        /* 搜索框样式优化 */
-        .search-container {
-            display: flex;
-            align-items: center;
-        }
-
-        #search-input {
-            background: #333;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 4px 10px;
-            font-size: 12px;
-            border-radius: 3px;
-            width: 180px;
-            outline: none;
-        }
-
-        #search-input:focus {
-            border-color: #666;
-            background: #3d3d3d;
-        }
-
-        /* 3 列布局核心代码 */
-        .main-container {
-            display: grid;
-            /* 强制 PC 端 3 列 */
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px;
-            padding: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: start; /* 防止卡片被拉长，保持瀑布流感 */
-        }
-
-        /* 站点卡片装饰 */
-        .site-column {
-            border-top: 4px solid #333;
-            padding-top: 10px;
-        }
-
-        .site-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 12px;
-        }
-
-        .site-name {
-            font-weight: 800;
-            font-size: 14px;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .site-domain {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        /* 文章列表 */
-        .article-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .article-item {
-            margin-bottom: 7px;
-            display: flex;
-            line-height: 1.4;
-        }
-
-        .time-badge {
-            font-size: 10px;
-            color: var(--text-muted);
-            min-width: 35px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-
-        .article-link {
-            text-decoration: none;
-            color: var(--link-color);
-        }
-
-        .article-link:hover {
-            text-decoration: underline;
-        }
-
-        /* 隐藏逻辑 */
+        :root { --bg: #fcfcfc; --header: #1a1a1a; --link: #0055aa; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; font-size: 13px; }
+        header { background: var(--header); color: white; padding: 8px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 40px; }
+        header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; }
+        #search-input { background: #333; border: 1px solid #444; color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 3px; width: 180px; outline: none; }
+        
+        .main-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 25px; max-width: 1300px; margin: 0 auto; align-items: start; }
+        .site-column { border-top: 4px solid #333; padding-top: 10px; margin-bottom: 20px; }
+        .site-name { font-weight: 800; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; display: block; margin-bottom: 10px; }
+        .article-list { list-style: none; padding: 0; margin: 0; }
+        .article-item { margin-bottom: 7px; display: flex; align-items: flex-start; }
+        .time-badge { font-size: 10px; color: #999; min-width: 35px; font-family: monospace; }
+        .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
+        .article-link:hover { text-decoration: underline; }
+        
+        #loading-overlay { text-align: center; padding: 100px 20px; color: #666; }
+        .refresh-btn { background: #333; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 15px; }
         .hidden { display: none !important; }
 
-        /* 移动端适配 */
-        @media (max-width: 900px) {
-            .main-container { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 600px) {
-            .main-container { grid-template-columns: 1fr; padding: 15px; }
-            #search-input { width: 120px; }
-        }
+        @media (max-width: 900px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .main-container { grid-template-columns: 1fr; } #search-input { width: 100px; } }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 onclick="window.location.reload()">TECHURLS</h1>
+    <h1 onclick="location.reload(true)">TECHURLS</h1>
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Filter news..." autocomplete="off">
     </div>
 </header>
 
-<div class="main-container
+<div id="loading-overlay">
+    <p id="status-text">正在从服务器同步最新数据...</p>
+    <button class="refresh-btn hidden" id="retry-btn" onclick="location.reload(true)">强制刷新页面</button>
+</div>
+
+<div class="main-container" id="content-grid"></div>
+
+<script>
+    (function() {
+        const grid = document.getElementById('content-grid');
+        const statusText = document.getElementById('status-text');
+        const retryBtn = document.getElementById('retry-btn');
+
+        // 超时检测：5秒不成功就显示刷新按钮
+        const timeout = setTimeout(() => {
+            if (grid.innerHTML === "") {
+                statusText.innerText = "数据加载缓慢，可能是网络或缓存问题。";
+                retryBtn.classList.remove('hidden');
+            }
+        }, 5000);
+
+        async function init() {
+            try {
+                // 1. 使用随机参数彻底绕过缓存
+                const jsonUrl = `./data/data.json?nocache=${Date.now()}`;
+                const response = await fetch(jsonUrl);
+
+                if (!response.ok) throw new Error(`无法找到数据文件 (HTTP ${response.status})`);
+
+                const data = await response.json();
+                clearTimeout(timeout);
+                
+                if (!data || data.length === 0) {
+                    statusText.innerText = "数据加载成功，但内容为空。请检查爬虫输出。";
+                    return;
+                }
+
+                // 2. 隐藏加载状态
+                document.getElementById('loading-overlay').style.display = 'none';
+
+                // 3. 渲染 3 列布局
+                grid.innerHTML = data.map(site => `
+                    <div class="site-column">
+                        <a href="${site.url || '#'}" class="site-name">${site.source.toUpperCase()}</a>
+                        <ul class="article-list">
+                            ${site.articles.map(art => `
+                                <li class="article-item">
+                                    <span class="time-badge">${art.time || '1h'}</span>
+                                    <a href="${art.link}" class="article-link" target="_blank" rel="noopener">${art.title}</a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+
+                // 4. 搜索逻辑
+                document.getElementById('search-input').oninput = (e) => {
+                    const k = e.target.value.toLowerCase();
+                    document.querySelectorAll('.article-item').forEach(item => {
+                        item.classList.toggle('hidden', !item.innerText.toLowerCase().includes(k));
+                    });
+                    document.querySelectorAll('.site-column').forEach(col => {
+                        const hasVisible = Array.from(col.querySelectorAll('.article-item')).some(i => !i.classList.contains('hidden'));
+                        col.classList.toggle('hidden', !hasMatch); // 修正逻辑：应为 !hasVisible
+                    });
+                };
+            } catch (err) {
+                statusText.style.color = "red";
+                statusText.innerText = `错误: ${err.message}`;
+                retryBtn.classList.remove('hidden');
+            }
+        }
+
+        // 立即启动
+        init();
+    })();
+</script>
+</body>
+</html>
