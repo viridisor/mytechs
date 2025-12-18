@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechURLs Clone - 极简技术聚合</title>
+    <style>
+        /* 1. 核心变量：复刻 TechURLs 的配色 */
+        :root {
+            --bg-color: #fcfcfc;
+            --text-color: #333;
+            --link-color: #0055aa;
+            --border-color: #ddd;
+            --header-bg: #1a1a1a;
+            --card-border-top: #333; /* 顶部粗线颜色 */
+        }
+
+        body {
+            font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        /* 2. 顶部导航栏 */
+        header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 18px;
+            margin: 0;
+            letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 12px;
+        }
+
+        /* 3. 网格容器：TechURLs 的灵魂 */
+        .main-container {
+            display: grid;
+            /* 响应式：最小 300px 一列，自动填充 */
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 25px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* 4. 单个站点卡片 */
+        .site-column {
+            background: transparent;
+        }
+
+        .site-header {
+            border-top: 4px solid var(--card-border-top); /* 标志性的顶部粗线 */
+            padding: 8px 0;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .site-name {
+            font-weight: 800;
+            font-size: 15px;
+            text-transform: uppercase;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .site-name:hover {
+            color: var(--link-color);
+        }
+
+        .site-domain {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* 5. 文章列表 */
+        .article-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .article-item {
+            margin-bottom: 7px;
+            display: flex;
+            line-height: 1.4;
+        }
+
+        .article-link {
+            text-decoration: none;
+            color: var(--link-color);
+            word-break: break-word;
+        }
+
+        .article-link:hover {
+            text-decoration: underline;
+            background-color: #f0f7ff;
+        }
+
+        .time-badge {
+            font-size: 11px;
+            color: #888;
+            min-width: 35px;
+            margin-right: 10px;
+            padding-top: 2px;
+            font-family: monospace;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TECHURLS</h1>
+    <div class="nav-links">
+        <a href="#">DEVURLS</a>
+        <a href="#">SCIURLS</a>
+        <a href="#">FINURLS</a>
+    </div>
+</header>
+
+<div class="main-container" id="content-grid">
+    </div>
+
+<footer>
+    &copy; 2024 TechURLs Clone - 自动聚合技术资讯
+</footer>
+
+<script>
+    // 模拟从你的爬虫 data.json 加载的数据
+    const data = [
+        {
+            source: "Hacker News",
+            domain: "ycombinator.com",
+            articles: [
+                { title: "The architecture of Uber's API gateway", link: "#", time: "2h" },
+                { title: "Llama 3.1: The open-source standard", link: "#", time: "5h" },
+                { title: "Why SQLite is all you need for small projects", link: "#", time: "8h" },
+                { title: "Building a 16-bit computer in Excel", link: "#", time: "12h" }
+            ]
+        },
+        {
+            source: "GitHub Trending",
+            domain: "github.com",
+            articles: [
+                { title: "microsoft/autogen: Next-gen AI agents framework", link: "#", time: "1d" },
+                { title: "valtown/val: Write and deploy small TS scripts", link: "#", time: "1d" },
+                { title: "tldraw/tldraw: A very good whiteboard tool", link: "#", time: "2d" }
+            ]
+        },
+        {
+            source: "The Verge",
+            domain: "theverge.com",
+            articles: [
+                { title: "Apple's new iPad Pro is impossibly thin", link: "#", time: "30m" },
+                { title: "Google Search is officially a monopoly, judge rules", link: "#", time: "4h" },
+                { title: "The best OLED monitors you can buy right now", link: "#", time: "10h" }
+            ]
+        },
+        {
+            source: "Ars Technica",
+            domain: "arstechnica.com",
+            articles: [
+                { title: "Boeing Starliner's return delayed again", link: "#", time: "1h" },
+                { title: "Review: The M4 iPad Pro is a beast", link: "#", time: "6h" }
+            ]
+        }
+    ];
+
+    function render() {
+        const grid = document.getElementById('content-grid');
+        grid.innerHTML = data.map(site => `
+            <div class="site-column">
+                <div class="site-header">
+                    <a href="#" class="site-name">${site.source}</a>
+                    <span class="site-domain">${site.domain}</span>
+                </div>
+                <ul class="article-list">
+                    ${site.articles.map(art => `
+                        <li class="article-item">
+                            <span class="time-badge">${art.time}</span>
+                            <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `).join('');
+    }
+
+    render();
+</script>
+
+</body>
+</html>
