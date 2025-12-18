@@ -1,0 +1,33 @@
+[
+  {
+    "source": "eVTOL News",
+    "domain": "evtol.news",
+    "articles": [
+      {
+        "title": "Archer and Southwest Airlines Partner on Electric Air Taxi Networks",
+        "link": "https://evtol.news/news/archer-southwest-airlines-partner",
+        "time": "3h"
+      },
+      {
+        "title": "Joby Receives Authorization for Elevate Flight Operations",
+        "link": "https://evtol.news/news/joby-elevate-authorization",
+        "time": "5h"
+      },
+      {
+        "title": "Lilium Expands to French Riviera with New Vertiport Partners",
+        "link": "https://evtol.news/news/lilium-french-riviera",
+        "time": "12h"
+      },
+      {
+        "title": "EHang Obtains First Airworthiness Certificate for Pilotless eVTOL",
+        "link": "https://evtol.news/news/ehang-certification-success",
+        "time": "1d"
+      },
+      {
+        "title": "Beta Technologies Opens New Electric Aircraft Production Facility",
+        "link": "https://evtol.news/news/beta-production-facility",
+        "time": "2d"
+      }
+    ]
+  }
+]
