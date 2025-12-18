@@ -91,12 +91,15 @@
             border-top: 5px solid var(--border);
             padding-top: 12px;
             background: white;
+    
+            /* 核心：固定高度，并设定为 Flex 布局 */
+            height: 400px; 
             display: flex;
-            flex-direction: column;
-            height: 400px; /* 固定高度阈值 */
-            overflow: hidden;
+            flex-direction: column; 
+    
             position: relative;
-            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden; /* 防止内容直接溢出到卡片外 */
+            transition: height 0.3s ease;
         }
 
         .site-column.expanded {
@@ -121,18 +124,28 @@
         /* 滚动列表 */
         .article-list {
             list-style: none;
-            padding: 0 8px;
+            padding: 0 10px;
             margin: 0;
-            overflow-y: hidden; /* 初始状态 */
+    
+            /* 核心：如果内容超过卡片高度，在此处产生滚动条 */
+            overflow-y: auto; 
+            flex: 1; /* 自动填充 site-header 之外的所有空间 */
+    
+            /* 始终开启滚动功能，即使没展开时也能滚动 */
+            scrollbar-width: thin;
         }
 
         .expanded .article-list {
             overflow-y: auto;
             scrollbar-width: thin;
         }
+        /* 隐藏横向滚动条 */
+        .article-list {
+            overflow-x: hidden;
+}
 
         /* 滚动条美化 */
-        .article-list::-webkit-scrollbar { width: 4px; }
+        .article-list::-webkit-scrollbar { width: 5px; }
         .article-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
 
         .article-item {
