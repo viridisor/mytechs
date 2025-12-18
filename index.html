@@ -3,162 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECHURLS | Advanced Edition</title>
+    <title>TECHURLS | eVTOL & Tech News</title>
     <style>
-        :root { --bg: #fcfcfc; --header: #1a1a1a; --link: #0055aa; --border: #333; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; font-size: 13px; color: #333; }
-        
-        /* 顶部导航 */
-        header { background: var(--header); color: white; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 45px; }
-        header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; letter-spacing: 1px; }
-        #search-input { background: #333; border: 1px solid #444; color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 3px; width: 200px; outline: none; }
+        :root {
+            --bg: #fcfcfc;
+            --header: #1a1a1a;
+            --link: #0055aa;
+            --border: #333;
+            --text: #111;
+        }
 
-        /* 3列布局容器 */
-        .main-container { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 35px; 
-            padding: 30px; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            align-items: start; 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        /* 导航栏 */
+        header {
+            background: var(--header);
+            color: white;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 48px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 16px;
+            margin: 0;
+            cursor: pointer;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #search-input {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            width: 200px;
+            outline: none;
+        }
+
+        .force-btn {
+            background: #444;
+            color: #ccc;
+            border: none;
+            font-size: 11px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .force-btn:hover { background: #666; color: #fff; }
+
+        /* 主容器布局 */
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
         }
 
         /* 站点卡片 */
-        .site-column { 
-            border-top: 4px solid var(--border); 
-            padding-top: 10px; 
-            background: #fff;
+        .site-column {
+            border-top: 5px solid var(--border);
+            padding-top: 12px;
+            background: white;
             display: flex;
             flex-direction: column;
-            height: 500px; /* 固定高度 */
+            height: 400px; /* 固定高度阈值 */
+            overflow: hidden;
             position: relative;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .site-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding: 0 5px; }
-        .site-name { font-weight: 900; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; }
-        .site-domain { font-size: 10px; color: #999; }
+        .site-column.expanded {
+            height: 600px; /* 展开后的高度 */
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0 8px 10px;
+        }
+
+        .site-name {
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #000;
+            text-decoration: none;
+        }
 
         /* 滚动列表 */
-        .article-list { 
-            list-style: none; 
-            padding: 0 5px; 
-            margin: 0; 
-            overflow-y: auto; /* 开启滚动 */
-            flex-grow: 1;
+        .article-list {
+            list-style: none;
+            padding: 0 8px;
+            margin: 0;
+            overflow-y: hidden; /* 初始状态 */
         }
 
-        /* 美化滚动条 */
-        .article-list::-webkit-scrollbar { width: 4px; }
-        .article-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
-        .article-list::-webkit-scrollbar-thumb:hover { background: #ccc; }
+        .expanded .article-list {
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
 
-        .article-item { margin-bottom: 8px; display: flex; align-items: flex-start; }
-        .time-badge { font-size: 10px; color: #aaa; min-width: 38px; font-family: monospace; padding-top: 2px; }
-        .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
+        /* 滚动条美化 */
+        .article-list::-webkit-scrollbar { width: 4px; }
+        .article-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+
+        .article-item {
+            margin-bottom: 9px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .time-badge {
+            font-size: 10px;
+            color: #999;
+            min-width: 40px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            padding-top: 2px;
+        }
+
+        .article-link {
+            text-decoration: none;
+            color: var(--link);
+            font-size: 13px;
+        }
+
         .article-link:hover { text-decoration: underline; }
 
-        /* 手动加载按钮样式 */
-        .load-more-area {
-            padding: 10px;
-            text-align: center;
-            border-top: 1px solid #f0f0f0;
-            background: #fff;
+        /* 渐变遮罩与按钮 */
+        .show-more-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(transparent, white 80%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 15px;
         }
-        .load-more-btn {
-            background: none;
+
+        .show-more-btn {
+            background: white;
             border: 1px solid #ddd;
-            color: #888;
+            color: #555;
+            padding: 6px 18px;
+            border-radius: 20px;
             font-size: 11px;
-            padding: 4px 12px;
-            border-radius: 15px;
+            font-weight: bold;
             cursor: pointer;
-            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .load-more-btn:hover { background: #f9f9f9; color: #333; border-color: #bbb; }
+
+        .show-more-btn:hover { border-color: #aaa; color: #111; }
+
+        /* 回到顶部 */
+        #back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            background: var(--header);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            z-index: 2000;
+            font-size: 18px;
+        }
 
         .hidden { display: none !important; }
 
-        /* 适配响应式 */
-        @media (max-width: 1000px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } .site-column { height: 400px; } }
+        /* 响应式调整 */
+        @media (max-width: 1100px) {
+            .main-container { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 650px) {
+            header { height: 55px; }
+            #search-input { width: 130px; }
+            .main-container { grid-template-columns: 1fr; padding: 15px; }
+            .site-column { height: 360px; }
+            .site-column.expanded { height: 520px; }
+            .article-item { margin-bottom: 12px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 onclick="location.reload()">TECHURLS</h1>
-    <input type="text" id="search-input" placeholder="SEARCH NEWS..." autocomplete="off">
+    <h1 onclick="location.reload(true)">TECHURLS</h1>
+    <div class="header-right">
+        <button class="force-btn" onclick="location.reload(true)">强制同步</button>
+        <input type="text" id="search-input" placeholder="SEARCH NEWS...">
+    </div>
 </header>
 
-<div class="main-container" id="content-grid"></div>
+<div class="main-container" id="content-grid">
+    </div>
+
+<button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
 <script>
-    const INITIAL_COUNT = 8; // 默认显示的阈值：每个网站显示 8 条
+    const HEIGHT_THRESHOLD = 380; // 自动检测高度阈值
 
-    async function init() {
+    async function loadData() {
         const grid = document.getElementById('content-grid');
         try {
-            const response = await fetch('./data/data.json?v=' + Date.now());
+            // 通过 nocache 绕过 GitHub Pages 缓存
+            const response = await fetch(`./data/data.json?nocache=${Date.now()}`);
+            if (!response.ok) throw new Error('数据加载失败');
             const data = await response.json();
 
-            grid.innerHTML = data.map((site, index) => {
-                const hasMore = site.articles.length > INITIAL_COUNT;
-                
-                return `
-                <div class="site-column" id="site-${index}">
+            grid.innerHTML = data.map((site, index) => `
+                <div class="site-column" id="col-${index}">
                     <div class="site-header">
                         <a href="${site.url || '#'}" class="site-name">${site.source}</a>
-                        <span class="site-domain">${site.domain || ''}</span>
                     </div>
                     <ul class="article-list">
-                        ${site.articles.map((art, i) => `
-                            <li class="article-item ${i >= INITIAL_COUNT ? 'hidden extra-item' : ''}">
+                        ${site.articles.map(art => `
+                            <li class="article-item">
                                 <span class="time-badge">${art.time || '1h'}</span>
-                                <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
+                                <a href="${art.link}" class="article-link" target="_blank" rel="noopener">${art.title}</a>
                             </li>
                         `).join('')}
                     </ul>
-                    ${hasMore ? `
-                        <div class="load-more-area">
-                            <button class="load-more-btn" onclick="showMore(this)">Show More</button>
-                        </div>
-                    ` : ''}
+                    <div class="show-more-overlay">
+                        <button class="show-more-btn" onclick="expandCard(${index})">SHOW MORE</button>
+                    </div>
                 </div>
-                `;
-            }).join('');
+            `).join('');
 
+            // 初始检查内容是否超过高度
+            setTimeout(autoCheckHeight, 100);
             setupSearch();
+
         } catch (err) {
-            grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px;">数据加载失败</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:100px;color:#999;">${err.message}</div>`;
         }
     }
 
-    // 显示更多新闻的逻辑
-    window.showMore = function(btn) {
-        const column = btn.closest('.site-column');
-        const extraItems = column.querySelectorAll('.extra-item');
-        extraItems.forEach(item => item.classList.remove('hidden'));
-        btn.parentElement.classList.add('hidden'); // 隐藏按钮区域
+    // 展开卡片逻辑
+    window.expandCard = function(index) {
+        const col = document.getElementById(`col-${index}`);
+        col.classList.add('expanded');
+        col.querySelector('.show-more-overlay').style.display = 'none';
     };
 
+    // 自动隐藏不必要的“显示更多”
+    function autoCheckHeight() {
+        document.querySelectorAll('.site-column').forEach(col => {
+            const list = col.querySelector('.article-list');
+            if (list.scrollHeight <= HEIGHT_THRESHOLD) {
+                col.querySelector('.show-more-overlay').style.display = 'none';
+                col.style.height = 'auto';
+            }
+        });
+    }
+
+    // 搜索逻辑
     function setupSearch() {
         const input = document.getElementById('search-input');
         input.oninput = (e) => {
             const val = e.target.value.toLowerCase();
             document.querySelectorAll('.article-item').forEach(item => {
-                const isMatch = item.innerText.toLowerCase().includes(val);
-                item.classList.toggle('hidden', !isMatch);
+                const text = item.innerText.toLowerCase();
+                item.classList.toggle('hidden', !text.includes(val));
             });
-            // 搜索时自动隐藏“显示更多”区域，防止视觉干扰
-            document.querySelectorAll('.load-more-area').forEach(area => {
-                area.classList.toggle('hidden', val.length > 0);
-            });
+
+            // 搜索时展开所有内容以便查看
+            if (val.length > 0) {
+                document.querySelectorAll('.site-column').forEach(col => {
+                    col.classList.add('expanded');
+                    col.querySelector('.show-more-overlay').style.display = 'none';
+                });
+            }
         };
     }
 
-    init();
+    // 回到顶部显示逻辑
+    window.onscroll = function() {
+        const btn = document.getElementById('back-to-top');
+        btn.style.display = (window.scrollY > 400) ? "block" : "none";
+    };
+
+    // 初始化加载
+    loadData();
 </script>
 </body>
 </html>
