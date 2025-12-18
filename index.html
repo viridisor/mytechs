@@ -3,116 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECHURLS | 3-Columns</title>
+    <title>TECHURLS | Advanced Edition</title>
     <style>
-        :root { --bg: #fcfcfc; --header: #1a1a1a; --link: #0055aa; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; font-size: 13px; }
-        header { background: var(--header); color: white; padding: 8px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 40px; }
-        header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; }
-        #search-input { background: #333; border: 1px solid #444; color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 3px; width: 180px; outline: none; }
+        :root { --bg: #fcfcfc; --header: #1a1a1a; --link: #0055aa; --border: #333; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; font-size: 13px; color: #333; }
         
-        .main-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 25px; max-width: 1300px; margin: 0 auto; align-items: start; }
-        .site-column { border-top: 4px solid #333; padding-top: 10px; margin-bottom: 20px; }
-        .site-name { font-weight: 800; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; display: block; margin-bottom: 10px; }
-        .article-list { list-style: none; padding: 0; margin: 0; }
-        .article-item { margin-bottom: 7px; display: flex; align-items: flex-start; }
-        .time-badge { font-size: 10px; color: #999; min-width: 35px; font-family: monospace; }
+        /* 顶部导航 */
+        header { background: var(--header); color: white; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 45px; }
+        header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; letter-spacing: 1px; }
+        #search-input { background: #333; border: 1px solid #444; color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 3px; width: 200px; outline: none; }
+
+        /* 3列布局容器 */
+        .main-container { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 35px; 
+            padding: 30px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            align-items: start; 
+        }
+
+        /* 站点卡片 */
+        .site-column { 
+            border-top: 4px solid var(--border); 
+            padding-top: 10px; 
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 500px; /* 固定高度 */
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .site-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding: 0 5px; }
+        .site-name { font-weight: 900; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; }
+        .site-domain { font-size: 10px; color: #999; }
+
+        /* 滚动列表 */
+        .article-list { 
+            list-style: none; 
+            padding: 0 5px; 
+            margin: 0; 
+            overflow-y: auto; /* 开启滚动 */
+            flex-grow: 1;
+        }
+
+        /* 美化滚动条 */
+        .article-list::-webkit-scrollbar { width: 4px; }
+        .article-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+        .article-list::-webkit-scrollbar-thumb:hover { background: #ccc; }
+
+        .article-item { margin-bottom: 8px; display: flex; align-items: flex-start; }
+        .time-badge { font-size: 10px; color: #aaa; min-width: 38px; font-family: monospace; padding-top: 2px; }
         .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
         .article-link:hover { text-decoration: underline; }
-        
-        #loading-overlay { text-align: center; padding: 100px 20px; color: #666; }
-        .refresh-btn { background: #333; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 15px; }
+
+        /* 手动加载按钮样式 */
+        .load-more-area {
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+            background: #fff;
+        }
+        .load-more-btn {
+            background: none;
+            border: 1px solid #ddd;
+            color: #888;
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .load-more-btn:hover { background: #f9f9f9; color: #333; border-color: #bbb; }
+
         .hidden { display: none !important; }
 
-        @media (max-width: 900px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .main-container { grid-template-columns: 1fr; } #search-input { width: 100px; } }
+        /* 适配响应式 */
+        @media (max-width: 1000px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } .site-column { height: 400px; } }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 onclick="location.reload(true)">TECHURLS</h1>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Filter news..." autocomplete="off">
-    </div>
+    <h1 onclick="location.reload()">TECHURLS</h1>
+    <input type="text" id="search-input" placeholder="SEARCH NEWS..." autocomplete="off">
 </header>
-
-<div id="loading-overlay">
-    <p id="status-text">正在从服务器同步最新数据...</p>
-    <button class="refresh-btn hidden" id="retry-btn" onclick="location.reload(true)">强制刷新页面</button>
-</div>
 
 <div class="main-container" id="content-grid"></div>
 
 <script>
-    (function() {
+    const INITIAL_COUNT = 8; // 默认显示的阈值：每个网站显示 8 条
+
+    async function init() {
         const grid = document.getElementById('content-grid');
-        const statusText = document.getElementById('status-text');
-        const retryBtn = document.getElementById('retry-btn');
+        try {
+            const response = await fetch('./data/data.json?v=' + Date.now());
+            const data = await response.json();
 
-        // 超时检测：5秒不成功就显示刷新按钮
-        const timeout = setTimeout(() => {
-            if (grid.innerHTML === "") {
-                statusText.innerText = "数据加载缓慢，可能是网络或缓存问题。";
-                retryBtn.classList.remove('hidden');
-            }
-        }, 5000);
-
-        async function init() {
-            try {
-                // 1. 使用随机参数彻底绕过缓存
-                const jsonUrl = `./data/data.json?nocache=${Date.now()}`;
-                const response = await fetch(jsonUrl);
-
-                if (!response.ok) throw new Error(`无法找到数据文件 (HTTP ${response.status})`);
-
-                const data = await response.json();
-                clearTimeout(timeout);
+            grid.innerHTML = data.map((site, index) => {
+                const hasMore = site.articles.length > INITIAL_COUNT;
                 
-                if (!data || data.length === 0) {
-                    statusText.innerText = "数据加载成功，但内容为空。请检查爬虫输出。";
-                    return;
-                }
-
-                // 2. 隐藏加载状态
-                document.getElementById('loading-overlay').style.display = 'none';
-
-                // 3. 渲染 3 列布局
-                grid.innerHTML = data.map(site => `
-                    <div class="site-column">
-                        <a href="${site.url || '#'}" class="site-name">${site.source.toUpperCase()}</a>
-                        <ul class="article-list">
-                            ${site.articles.map(art => `
-                                <li class="article-item">
-                                    <span class="time-badge">${art.time || '1h'}</span>
-                                    <a href="${art.link}" class="article-link" target="_blank" rel="noopener">${art.title}</a>
-                                </li>
-                            `).join('')}
-                        </ul>
+                return `
+                <div class="site-column" id="site-${index}">
+                    <div class="site-header">
+                        <a href="${site.url || '#'}" class="site-name">${site.source}</a>
+                        <span class="site-domain">${site.domain || ''}</span>
                     </div>
-                `).join('');
+                    <ul class="article-list">
+                        ${site.articles.map((art, i) => `
+                            <li class="article-item ${i >= INITIAL_COUNT ? 'hidden extra-item' : ''}">
+                                <span class="time-badge">${art.time || '1h'}</span>
+                                <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    ${hasMore ? `
+                        <div class="load-more-area">
+                            <button class="load-more-btn" onclick="showMore(this)">Show More</button>
+                        </div>
+                    ` : ''}
+                </div>
+                `;
+            }).join('');
 
-                // 4. 搜索逻辑
-                document.getElementById('search-input').oninput = (e) => {
-                    const k = e.target.value.toLowerCase();
-                    document.querySelectorAll('.article-item').forEach(item => {
-                        item.classList.toggle('hidden', !item.innerText.toLowerCase().includes(k));
-                    });
-                    document.querySelectorAll('.site-column').forEach(col => {
-                        const hasVisible = Array.from(col.querySelectorAll('.article-item')).some(i => !i.classList.contains('hidden'));
-                        col.classList.toggle('hidden', !hasMatch); // 修正逻辑：应为 !hasVisible
-                    });
-                };
-            } catch (err) {
-                statusText.style.color = "red";
-                statusText.innerText = `错误: ${err.message}`;
-                retryBtn.classList.remove('hidden');
-            }
+            setupSearch();
+        } catch (err) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px;">数据加载失败</div>`;
         }
+    }
 
-        // 立即启动
-        init();
-    })();
+    // 显示更多新闻的逻辑
+    window.showMore = function(btn) {
+        const column = btn.closest('.site-column');
+        const extraItems = column.querySelectorAll('.extra-item');
+        extraItems.forEach(item => item.classList.remove('hidden'));
+        btn.parentElement.classList.add('hidden'); // 隐藏按钮区域
+    };
+
+    function setupSearch() {
+        const input = document.getElementById('search-input');
+        input.oninput = (e) => {
+            const val = e.target.value.toLowerCase();
+            document.querySelectorAll('.article-item').forEach(item => {
+                const isMatch = item.innerText.toLowerCase().includes(val);
+                item.classList.toggle('hidden', !isMatch);
+            });
+            // 搜索时自动隐藏“显示更多”区域，防止视觉干扰
+            document.querySelectorAll('.load-more-area').forEach(area => {
+                area.classList.toggle('hidden', val.length > 0);
+            });
+        };
+    }
+
+    init();
 </script>
 </body>
 </html>
