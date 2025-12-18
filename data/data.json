@@ -3,63 +3,147 @@
     "source": "eVTOL News",
     "domain": "evtol.news",
     "articles": [
-      { "title": "Joby Aviation Receives FAA Authorization", "link": "https://evtol.news", "time": "2h" },
-      { "title": "Archer Midnight Completes Phase 1 Flight Test", "link": "https://evtol.news", "time": "5h" },
-      { "title": "Lilium Expands Production Capacity in Germany", "link": "https://evtol.news", "time": "8h" }
+      { "title": "Archer Midnight Completes First Flight Test Phase", "link": "#", "time": "1h" },
+      { "title": "Joby Aviation Receives FAA Certification for Elevate", "link": "#", "time": "3h" },
+      { "title": "Lilium Jet Expansion in the French Riviera", "link": "#", "time": "5h" },
+      { "title": "EHang Obtains World's First OC for Unmanned eVTOL", "link": "#", "time": "8h" },
+      { "title": "Beta Technologies Opens New Vermont Factory", "link": "#", "time": "12h" },
+      { "title": "Vertical Aerospace VX4 Completes Tethered Flight", "link": "#", "time": "1d" },
+      { "title": "Volocopter to Launch Commercial Service in Paris", "link": "#", "time": "1d" },
+      { "title": "Eve Air Mobility Selects New Avionics Supplier", "link": "#", "time": "2d" },
+      { "title": "Wisk Aero Demonstrates Fully Autonomous Transition", "link": "#", "time": "2d" },
+      { "title": "Overair Butterfly Design Optimization Updates", "link": "#", "time": "3d" },
+      { "title": "Supernal SA-2 Concept Debuts at CES 2025", "link": "#", "time": "3d" },
+      { "title": "SkyDrive Secures Funding for Suzuki Partnership", "link": "#", "time": "4d" },
+      { "title": "AutoFlight Sets New Long Distance World Record", "link": "#", "time": "4d" },
+      { "title": "Dufour Aerospace Aero2 Drone Testing Progress", "link": "#", "time": "5d" },
+      { "title": "Honda eVTOL Engine Development Breakthrough", "link": "#", "time": "6d" }
     ]
   },
   {
     "source": "Vertical Mag",
     "domain": "verticalmag.com",
     "articles": [
-      { "title": "Airbus Helicopters sees strong demand for H145", "link": "#", "time": "1h" },
-      { "title": "EHang expands flight operations in UAE", "link": "#", "time": "4h" },
-      { "title": "The future of heavy-lift cargo drones", "link": "#", "time": "12h" }
-    ]
-  },
-  {
-    "source": "Hacker News",
-    "domain": "ycombinator.com",
-    "articles": [
-      { "title": "Show HN: A terminal-based eVTOL tracker", "link": "#", "time": "30m" },
-      { "title": "Why electric aviation is harder than cars", "link": "#", "time": "3h" },
-      { "title": "The physics of distributed electric propulsion", "link": "#", "time": "7h" }
-    ]
-  },
-  {
-    "source": "The Verge",
-    "domain": "theverge.com",
-    "articles": [
-      { "title": "Review: Flying in a pilotless air taxi", "link": "#", "time": "1h" },
-      { "title": "NASA's X-57 Maxwell project updates", "link": "#", "time": "6h" },
-      { "title": "Best tech for sustainable travel 2025", "link": "#", "time": "1d" }
+      { "title": "Global Helicopter Fleet Growth Forecast 2025", "link": "#", "time": "2h" },
+      { "title": "Bell 525 Relentless Progressing Toward Certification", "link": "#", "time": "4h" },
+      { "title": "Airbus H160 Enters Service in North America", "link": "#", "time": "6h" },
+      { "title": "Leonardo AW139 Reaches 4 Million Flight Hours", "link": "#", "time": "10h" },
+      { "title": "Sikorsky RAIDER X Competitive Prototype Status", "link": "#", "time": "15h" },
+      { "title": "Milestone Aviation Expands Lease Portfolio", "link": "#", "time": "1d" },
+      { "title": "Robinson Helicopter Safety Updates for R44/R66", "link": "#", "time": "1d" },
+      { "title": "Bristow Group Expands Offshore Wind Contracts", "link": "#", "time": "2d" },
+      { "title": "Garmin G1000H NXi Available for Bell 505", "link": "#", "time": "2d" },
+      { "title": "Kaman K-MAX Heavy Lift Firefighting Ops", "link": "#", "time": "3d" },
+      { "title": "Pratt & Whitney PT6 Engine Reliability Milestones", "link": "#", "time": "3d" },
+      { "title": "CHC Helicopter Restructuring Completion Updates", "link": "#", "time": "4d" },
+      { "title": "The Rise of Hybrid-Electric Heavy Lift Solutions", "link": "#", "time": "5d" },
+      { "title": "Wildfire Suppression: The Role of New Platforms", "link": "#", "time": "5d" },
+      { "title": "Heli-Expo 2025: What to Expect in Anaheim", "link": "#", "time": "6d" }
     ]
   },
   {
     "source": "FlightGlobal",
     "domain": "flightglobal.com",
     "articles": [
-      { "title": "Embraer’s Eve targets 2026 for entry into service", "link": "#", "time": "2h" },
-      { "title": "Rolls-Royce completes tests on hybrid engine", "link": "#", "time": "9h" },
-      { "title": "Global air traffic hits new post-pandemic high", "link": "#", "time": "15h" }
+      { "title": "Boeing 777-9 Certification Flight Test Update", "link": "#", "time": "30m" },
+      { "title": "Airbus A321XLR Range Performance Verified", "link": "#", "time": "2h" },
+      { "title": "United Airlines Orders 50 More Electric Craft", "link": "#", "time": "5h" },
+      { "title": "Sustainable Aviation Fuel Production Hits Record", "link": "#", "time": "9h" },
+      { "title": "Embraer Returns to Profitability in Q4", "link": "#", "time": "1d" },
+      { "title": "Lufthansa Fleet Modernization Strategy 2030", "link": "#", "time": "1d" },
+      { "title": "Cathay Pacific Orders A350 Freighters", "link": "#", "time": "2d" },
+      { "title": "Spirit AeroSystems Financial Recovery Plan", "link": "#", "time": "2d" },
+      { "title": "Turkish Airlines Massive Airbus Order Status", "link": "#", "time": "3d" },
+      { "title": "Gulfstream G700 Sets Speed Records", "link": "#", "time": "3d" },
+      { "title": "ZeroAvia Hydrogen Engine Ground Testing", "link": "#", "time": "4d" },
+      { "title": "Delta Air Lines Expands Transatlantic Routes", "link": "#", "time": "4d" },
+      { "title": "FAA Updates Safety Oversight for New OEMS", "link": "#", "time": "5d" },
+      { "title": "Singapore Airlines Premium Cabin Overhaul", "link": "#", "time": "6d" },
+      { "title": "Future of Narrowbody Aircraft: Next Gen Tech", "link": "#", "time": "1w" }
+    ]
+  },
+  {
+    "source": "Hacker News",
+    "domain": "ycombinator.com",
+    "articles": [
+      { "title": "The Physics of Distributed Electric Propulsion", "link": "#", "time": "1h" },
+      { "title": "Show HN: Open Source Flight Control System", "link": "#", "time": "2h" },
+      { "title": "Why Solid State Batteries Matter for Aviation", "link": "#", "time": "4h" },
+      { "title": "LIDAR vs Computer Vision in Autonomous Drones", "link": "#", "time": "7h" },
+      { "title": "A Programmers Guide to Avionics Safety Standards", "link": "#", "time": "10h" },
+      { "title": "Optimizing Propeller Noise with Neural Networks", "link": "#", "time": "13h" },
+      { "title": "Real-time Path Planning in 3D Urban Space", "link": "#", "time": "1d" },
+      { "title": "Reverse Engineering a 1980s Autopilot", "link": "#", "time": "1d" },
+      { "title": "The Math Behind Fly-by-Wire Control Laws", "link": "#", "time": "2d" },
+      { "title": "Carbon Fiber Composites: A Deep Dive", "link": "#", "time": "2d" },
+      { "title": "Is Hydrogen Really the Future of Short Haul?", "link": "#", "time": "3d" },
+      { "title": "Lessons from the Boeing 737 Max Software", "link": "#", "time": "3d" },
+      { "title": "The High Cost of Aerospace Grade Chips", "link": "#", "time": "4d" },
+      { "title": "DO-178C: Software Considerations in Aviation", "link": "#", "time": "5d" },
+      { "title": "How to Build a UAV with Raspberry Pi 5", "link": "#", "time": "1w" }
+    ]
+  },
+  {
+    "source": "Aviation Week",
+    "domain": "aviationweek.com",
+    "articles": [
+      { "title": "Defense Budget: Next Gen Fighter Priorities", "link": "#", "time": "3h" },
+      { "title": "MRO Trends: Predictive Maintenance Success", "link": "#", "time": "6h" },
+      { "title": "GE Aerospace Engine Output Ramps Up", "link": "#", "time": "11h" },
+      { "title": "Supersonic Commercial Flight: Boom Updates", "link": "#", "time": "14h" },
+      { "title": "The Logistics of Hydrogen Airport Infrastructure", "link": "#", "time": "1d" },
+      { "title": "Northrop Grumman B-21 Flight Test Progress", "link": "#", "time": "1d" },
+      { "title": "Engine MRO Supply Chain Constraints Easing", "link": "#", "time": "2d" },
+      { "title": "SpaceX Starship Commercial Payload Timeline", "link": "#", "time": "2d" },
+      { "title": "Vertical Flight Society Annual Meeting Recap", "link": "#", "time": "3d" },
+      { "title": "Hypersonic Missile Defense Systems Design", "link": "#", "time": "3d" },
+      { "title": "Regional Air Mobility (RAM) Market Analysis", "link": "#", "time": "4d" },
+      { "title": "Safran Electric Motor Production Capacity", "link": "#", "time": "5d" },
+      { "title": "Air Force One Replacement Cost Projections", "link": "#", "time": "5d" },
+      { "title": "Sustainability: Net Zero by 2050 Challenges", "link": "#", "time": "6d" },
+      { "title": "Commercial Space Stations: The New Frontier", "link": "#", "time": "1w" }
     ]
   },
   {
     "source": "TechCrunch",
     "domain": "techcrunch.com",
     "articles": [
-      { "title": "Volocopter secures $100M in Series E funding", "link": "#", "time": "3h" },
-      { "title": "Beta Technologies raises massive round for chargers", "link": "#", "time": "10h" },
-      { "title": "Startup of the week: Autonomous cargo flight", "link": "#", "time": "2d" }
+      { "title": "Volocopter Secures $150M Series E Extension", "link": "#", "time": "4h" },
+      { "title": "Lilium Goes Public: A Post-SPAC Review", "link": "#", "time": "7h" },
+      { "title": "The VC Winter: Aerospace Startups Survival", "link": "#", "time": "12h" },
+      { "title": "Meet the YC S24 Aviation Startups", "link": "#", "time": "18h" },
+      { "title": "Is EHang the Next Tesla of the Skies?", "link": "#", "time": "1d" },
+      { "title": "Zipline Hits 1 Million Commercial Deliveries", "link": "#", "time": "1d" },
+      { "title": "AirTaxi Apps: The Race for the Interface", "link": "#", "time": "2d" },
+      { "title": "Autonomous Cargo: The Profitability Question", "link": "#", "time": "2d" },
+      { "title": "Skydio Stops Consumer Drone Production", "link": "#", "time": "3d" },
+      { "title": "Startup Builds Solar-Powered HALE Drone", "link": "#", "time": "3d" },
+      { "title": "Electric Regional Jets: Heart Aerospace", "link": "#", "time": "4d" },
+      { "title": "Universal Hydrogen Declares Bankruptcy", "link": "#", "time": "5d" },
+      { "title": "Joby Acquires Autonomy Division from Xwing", "link": "#", "time": "5d" },
+      { "title": "Uber Elevate: 5 Years After Sale to Joby", "link": "#", "time": "6d" },
+      { "title": "Top Aerospace Tech Trends to Watch 2025", "link": "#", "time": "1w" }
     ]
   },
   {
-    "source": "Wired",
-    "domain": "wired.com",
+    "source": "The Verge",
+    "domain": "theverge.com",
     "articles": [
-      { "title": "Inside the quietest aircraft ever built", "link": "#", "time": "5h" },
-      { "title": "Batteries are finally light enough for short flights", "link": "#", "time": "1d" },
-      { "title": "The city of the future is built around vertiports", "link": "#", "time": "3d" }
+      { "title": "Review: Flying in a Pilotless Air Taxi", "link": "#", "time": "5h" },
+      { "title": "Why Air Taxis Won't Replace Uber Quickly", "link": "#", "time": "9h" },
+      { "title": "NASA's X-57 Electric Plane Project Cancelled", "link": "#", "time": "13h" },
+      { "title": "Quiet Mode: The Noise Engineering of eVTOLs", "link": "#", "time": "19h" },
+      { "title": "How Drones are Reshaping Modern Warfare", "link": "#", "time": "1d" },
+      { "title": "DJI Air 3S Leak: Specs and New Sensors", "link": "#", "time": "1d" },
+      { "title": "Building Vertiports in New York City", "link": "#", "time": "2d" },
+      { "title": "AirPods for Pilots? New Noise Cancelling Tech", "link": "#", "time": "2d" },
+      { "title": "Flying Cars: The Eternal Tech Dream Status", "link": "#", "time": "3d" },
+      { "title": "Joby vs Archer: The New Space Race", "link": "#", "time": "3d" },
+      { "title": "Elon Musk's Opinion on Electric Jets", "link": "#", "time": "4d" },
+      { "title": "The FAA's Battle with Drone Enthusiasts", "link": "#", "time": "5d" },
+      { "title": "The 10 Best Aerospace Documentaries on Netflix", "link": "#", "time": "5d" },
+      { "title": "Inside EHang's Command and Control Center", "link": "#", "time": "6d" },
+      { "title": "How to Get Licensed as a Remote Pilot", "link": "#", "time": "1w" }
     ]
   }
 ]
