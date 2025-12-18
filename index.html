@@ -3,141 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECHURLS | Fixed Scroll Dashboard</title>
+    <title>TECHURLS | eVTOL Dashboard</title>
     <style>
-        :root { --bg: #fcfcfc; --header: #1a1a1a; --link: #0055aa; --border: #333; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; font-size: 13px; color: #111; }
-
-        header { 
-            background: var(--header); color: white; padding: 0 25px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; height: 50px; 
+        :root {
+            --bg: #fcfcfc;
+            --header: #1a1a1a;
+            --link: #0055aa;
+            --border: #333;
         }
-        .logo-area { display: flex; align-items: center; gap: 15px; }
+
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        /* 顶部导航 */
+        header {
+            background: var(--header);
+            color: white;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 48px;
+        }
+
         header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; letter-spacing: 1px; }
-        
-        .sync-text-btn { 
-            font-size: 11px; color: #aaa; cursor: pointer; 
-            border: 1px solid #444; padding: 3px 8px; border-radius: 3px;
-        }
-        .sync-text-btn:hover { color: #fff; background: #333; }
 
-        #search-input { 
-            background: #333; border: 1px solid #444; color: #fff; 
-            padding: 6px 12px; font-size: 12px; border-radius: 4px; width: 160px; outline: none; 
-        }
-
-        .main-container { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; padding: 30px; max-width: 1400px; margin: 0 auto; 
+        #search-input {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            width: 180px;
+            outline: none;
         }
 
-        /* 修复卡片容器布局 */
+        /* 3列布局布局 */
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 站点卡片：高度锁定 */
         .site-column {
-            border-top: 5px solid var(--border); padding-top: 12px;
-            background: white; 
-            height: 400px; /* 强制固定高度 */
-            display: flex; 
-            flex-direction: column; /* 纵向排列标题和列表 */
+            border-top: 5px solid var(--border);
+            padding-top: 12px;
+            background: white;
+            height: 400px; /* 固定高度，不再改变 */
+            display: flex;
+            flex-direction: column;
             position: relative;
-            overflow: hidden; /* 防止内容溢出到卡片外 */
+            overflow: hidden;
         }
 
-        .site-header { flex: 0 0 auto; display: flex; justify-content: space-between; padding: 0 8px 10px; }
-        .site-name { font-weight: 900; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; }
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px 10px;
+        }
 
-        /* 修复内部滚动列表 */
+        .site-name {
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* 内部滚动列表 */
         .article-list {
-            list-style: none; padding: 0 10px; margin: 0; 
-            flex: 1 1 auto; /* 核心：让列表自动填满剩余高度 */
-            overflow-y: auto !important; /* 强制开启纵向滚动 */
+            list-style: none;
+            padding: 0 10px;
+            margin: 0;
+            flex: 1;
+            overflow-y: hidden; /* 初始禁止滚动 */
             overflow-x: hidden;
+        }
+
+        /* 激活滚动 */
+        .site-column.can-scroll .article-list {
+            overflow-y: auto;
             scrollbar-width: thin;
         }
-        
-        /* 确保滚动条美观 */
+
+        /* 美化滚动条 */
         .article-list::-webkit-scrollbar { width: 4px; }
         .article-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+        .article-list::-webkit-scrollbar-thumb:hover { background: #ddd; }
 
-        .article-item { margin-bottom: 9px; display: flex; align-items: flex-start; }
-        .extra-item { display: none; } 
-
-        .time-badge { font-size: 10px; color: #999; min-width: 40px; font-family: monospace; padding-top: 2px; }
-        .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
-
-        /* Show More 逻辑 */
-        .show-more-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            height: 60px; background: linear-gradient(transparent, rgba(255,255,255,0.95) 70%);
-            display: flex; align-items: flex-end; justify-content: center;
-            padding-bottom: 10px;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        .article-item {
+            margin-bottom: 9px;
+            display: flex;
+            align-items: flex-start;
         }
-        
-        /* 当监听到滚动到底部时显示 */
-        .site-column.reached-bottom .show-more-overlay {
-            opacity: 1; pointer-events: auto;
+
+        /* 默认隐藏的条目 */
+        .extra-item { display: none; }
+
+        .time-badge {
+            font-size: 10px;
+            color: #999;
+            min-width: 40px;
+            font-family: monospace;
+            padding-top: 2px;
+        }
+
+        .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
+        .article-link:hover { text-decoration: underline; }
+
+        /* 渐变遮罩与按钮 */
+        .show-more-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, white 90%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 12px;
         }
 
         .show-more-btn {
-            background: #1a1a1a; color: white; border: none;
-            padding: 6px 16px; border-radius: 4px; font-size: 11px; 
-            font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            background: white;
+            border: 1px solid #ddd;
+            color: #666;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
+        .show-more-btn:hover { border-color: #999; color: #111; }
+
+        /* 响应式调整 */
         @media (max-width: 1000px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } }
+        @media (max-width: 650px) { 
+            .main-container { grid-template-columns: 1fr; }
+            .site-column { height: 380px; }
+        }
+
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-area">
-        <h1 onclick="location.reload(true)">TECHURLS</h1>
-        <div class="sync-text-btn" onclick="syncData()">强制同步数据</div>
+    <h1 onclick="location.reload(true)">TECHURLS</h1>
+    <div class="header-right">
+        <input type="text" id="search-input" placeholder="SEARCH...">
     </div>
-    <input type="text" id="search-input" placeholder="搜索关键词...">
 </header>
 
 <div class="main-container" id="content-grid"></div>
 
 <script>
-    const INITIAL_COUNT = 10;
-    const INCREMENT = 10;
-
-    async function syncData() {
-        const btn = document.querySelector('.sync-text-btn');
-        btn.innerText = "正在同步...";
-        await loadData();
-        btn.innerText = "强制同步数据";
-    }
-
     async function loadData() {
         const grid = document.getElementById('content-grid');
         try {
-            // 使用随机数确保彻底绕过 GitHub Pages 缓存
-            const response = await fetch(`./data/data.json?nocache=${Date.now()}`);
+            const response = await fetch(`./data/data.json?t=${Date.now()}`);
             const data = await response.json();
 
             grid.innerHTML = data.map((site, index) => {
-                const hasMore = site.articles.length > INITIAL_COUNT;
+                const threshold = 8; // 默认显示前 8 条
+                const hasMore = site.articles.length > threshold;
+
                 return `
-                <div class="site-column" id="col-${index}" data-visible="${INITIAL_COUNT}">
+                <div class="site-column" id="col-${index}">
                     <div class="site-header">
                         <a href="${site.url || '#'}" class="site-name">${site.source}</a>
                     </div>
-                    <ul class="article-list" onscroll="handleScroll(this, ${index})">
+                    <ul class="article-list">
                         ${site.articles.map((art, i) => `
-                            <li class="article-item ${i >= INITIAL_COUNT ? 'extra-item' : ''}">
+                            <li class="article-item ${i >= threshold ? 'extra-item' : ''}">
                                 <span class="time-badge">${art.time || '1h'}</span>
                                 <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
                             </li>
                         `).join('')}
                     </ul>
                     ${hasMore ? `
-                    <div class="show-more-overlay" id="overlay-${index}">
-                        <button class="show-more-btn" onclick="loadMore(${index})">LOAD MORE +10</button>
+                    <div class="show-more-overlay">
+                        <button class="show-more-btn" onclick="unlockCard(${index})">SHOW MORE</button>
                     </div>` : ''}
                 </div>
                 `;
@@ -145,50 +206,38 @@
 
             setupSearch();
         } catch (e) {
-            grid.innerHTML = "<p style='padding:50px; text-align:center; width:100%;'>无法同步数据，请检查 data.json 路径。</p>";
+            grid.innerHTML = "<p style='text-align:center;width:100%'>数据加载失败</p>";
         }
     }
 
-    // 核心：滚动监听函数
-    window.handleScroll = function(listEl, index) {
+    // 解锁滚动逻辑
+    window.unlockCard = function(index) {
         const col = document.getElementById(`col-${index}`);
-        if (col.classList.contains('all-loaded')) return;
-
-        // 计算是否接近底部
-        const scrollBottom = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight;
         
-        // 距离底部小于 10px 时触发
-        if (scrollBottom < 10) {
-            col.classList.add('reached-bottom');
-        }
-    };
-
-    window.loadMore = function(index) {
-        const col = document.getElementById(`col-${index}`);
-        let visibleCount = parseInt(col.getAttribute('data-visible')) + INCREMENT;
-        const items = col.querySelectorAll('.article-item');
+        // 1. 显示隐藏的条目
+        col.querySelectorAll('.extra-item').forEach(el => el.style.display = 'flex');
         
-        col.setAttribute('data-visible', visibleCount);
-        items.forEach((item, i) => {
-            if (i < visibleCount) item.style.display = 'flex';
-        });
-
-        if (visibleCount >= items.length) {
-            col.classList.add('all-loaded');
-            const overlay = document.getElementById(`overlay-${index}`);
-            if (overlay) overlay.style.display = 'none';
-        }
+        // 2. 开启内部滚动条
+        col.classList.add('can-scroll');
+        
+        // 3. 移除遮罩按钮
+        col.querySelector('.show-more-overlay').style.display = 'none';
     };
 
     function setupSearch() {
         document.getElementById('search-input').oninput = (e) => {
             const val = e.target.value.toLowerCase();
             document.querySelectorAll('.article-item').forEach(item => {
-                item.style.display = item.innerText.toLowerCase().includes(val) ? 'flex' : 'none';
+                const match = item.innerText.toLowerCase().includes(val);
+                item.classList.toggle('hidden', !match);
             });
-            document.querySelectorAll('.show-more-overlay').forEach(el => {
-                el.style.opacity = val.length > 0 ? "0" : "";
-            });
+            // 搜索时自动解锁所有卡片的滚动功能
+            if(val.length > 0) {
+                document.querySelectorAll('.site-column').forEach((c, i) => {
+                    const btn = c.querySelector('.show-more-btn');
+                    if(btn) unlockCard(i);
+                });
+            }
         };
     }
 
