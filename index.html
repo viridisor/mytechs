@@ -76,4 +76,124 @@
 
         .show-more-btn {
             background: #1a1a1a; color: white; border: none;
-            padding: 5px 15px;
+            padding: 5px 15px; border-radius: 4px; font-size: 11px; 
+            font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .show-more-btn:hover { background: #333; }
+
+        .hidden { display: none !important; }
+        @media (max-width: 1000px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h1 onclick="location.reload(true)">TECHURLS</h1>
+        <div class="sync-text-btn" onclick="syncData()">强制同步数据</div>
+    </div>
+    <input type="text" id="search-input" placeholder="搜索新闻...">
+</header>
+
+<div class="main-container" id="content-grid"></div>
+
+<script>
+    let rawData = [];
+    const INITIAL_COUNT = 10;
+    const INCREMENT = 10;
+
+    async function syncData() {
+        const btn = document.querySelector('.sync-text-btn');
+        btn.innerText = "同步中...";
+        await loadData();
+        btn.innerText = "强制同步数据";
+    }
+
+    async function loadData() {
+        const grid = document.getElementById('content-grid');
+        try {
+            const response = await fetch(`./data/data.json?t=${Date.now()}`);
+            rawData = await response.json();
+
+            grid.innerHTML = rawData.map((site, index) => {
+                const hasMore = site.articles.length > INITIAL_COUNT;
+                return `
+                <div class="site-column" id="col-${index}" data-visible="${INITIAL_COUNT}">
+                    <div class="site-header">
+                        <a href="${site.url || '#'}" class="site-name">${site.source}</a>
+                    </div>
+                    <ul class="article-list" onscroll="handleScroll(this, ${index})">
+                        ${site.articles.map((art, i) => `
+                            <li class="article-item ${i >= INITIAL_COUNT ? 'extra-item' : ''}">
+                                <span class="time-badge">${art.time || '1h'}</span>
+                                <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    ${hasMore ? `
+                    <div class="show-more-overlay" id="overlay-${index}">
+                        <button class="show-more-btn" onclick="loadMore(${index})">加载更多 (+10)</button>
+                    </div>` : ''}
+                </div>
+                `;
+            }).join('');
+
+            setupSearch();
+        } catch (e) {
+            grid.innerHTML = "<p style='text-align:center;width:100%;padding:50px;'>无法连接到数据源，请稍后再试。</p>";
+        }
+    }
+
+    // 监听滚动事件
+    window.handleScroll = function(listElement, index) {
+        const col = document.getElementById(`col-${index}`);
+        // 如果已经全部加载，不再处理
+        if (col.classList.contains('all-loaded')) return;
+
+        // 判断是否滚动到底部 (留 5px 余量提高灵敏度)
+        const isBottom = listElement.scrollHeight - listElement.scrollTop <= listElement.clientHeight + 5;
+        
+        if (isBottom) {
+            col.classList.add('reached-bottom');
+        }
+    };
+
+    // 加载更多逻辑
+    window.loadMore = function(index) {
+        const col = document.getElementById(`col-${index}`);
+        let visibleCount = parseInt(col.getAttribute('data-visible'));
+        const allItems = col.querySelectorAll('.article-item');
+        
+        visibleCount += INCREMENT;
+        col.setAttribute('data-visible', visibleCount);
+
+        allItems.forEach((item, i) => {
+            if (i < visibleCount) item.style.display = 'flex';
+        });
+
+        // 检查是否所有内容都已显示
+        if (visibleCount >= allItems.length) {
+            col.classList.add('all-loaded');
+            document.getElementById(`overlay-${index}`).style.display = 'none';
+        }
+    };
+
+    function setupSearch() {
+        document.getElementById('search-input').oninput = (e) => {
+            const val = e.target.value.toLowerCase();
+            document.querySelectorAll('.article-item').forEach(item => {
+                const match = item.innerText.toLowerCase().includes(val);
+                item.style.display = match ? 'flex' : 'none';
+            });
+            // 搜索时隐藏加载按钮
+            document.querySelectorAll('.show-more-overlay').forEach(el => {
+                el.style.opacity = val.length > 0 ? "0" : "";
+            });
+        };
+    }
+
+    loadData();
+</script>
+</body>
+</html>
