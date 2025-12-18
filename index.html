@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechURLs Clone - 极简技术聚合</title>
+    <title>TECHURLS | Technical News Aggregator</title>
     <style>
-        /* 1. 核心变量：复刻 TechURLs 的配色 */
+        /* 复刻 TechURLs 核心样式 */
         :root {
             --bg-color: #fcfcfc;
             --text-color: #333;
             --link-color: #0055aa;
             --border-color: #ddd;
             --header-bg: #1a1a1a;
-            --card-border-top: #333; /* 顶部粗线颜色 */
         }
 
         body {
@@ -21,56 +20,61 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            font-size: 14px;
+            font-size: 13px; /* TechURLs 使用略小的字号 */
         }
 
-        /* 2. 顶部导航栏 */
+        /* 顶部黑条导航 */
         header {
             background-color: var(--header-bg);
             color: white;
-            padding: 10px 20px;
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
         header h1 {
-            font-size: 18px;
+            font-size: 16px;
             margin: 0;
             letter-spacing: 1px;
             font-weight: 900;
+            cursor: pointer;
         }
 
         .nav-links a {
-            color: #ccc;
+            color: #aaa;
             text-decoration: none;
             margin-left: 15px;
-            font-size: 12px;
+            font-size: 11px;
+            text-transform: uppercase;
         }
 
-        /* 3. 网格容器：TechURLs 的灵魂 */
+        .nav-links a:hover { color: #fff; }
+
+        /* 多栏布局容器 */
         .main-container {
             display: grid;
-            /* 响应式：最小 300px 一列，自动填充 */
+            /* 关键：自动根据宽度决定列数 */
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-            padding: 25px;
-            max-width: 1600px;
-            margin: 0 auto;
+            gap: 20px;
+            padding: 20px;
+            max-width: 100%;
         }
 
-        /* 4. 单个站点卡片 */
+        /* 站点卡片 */
         .site-column {
-            background: transparent;
+            display: flex;
+            flex-direction: column;
         }
 
         .site-header {
-            border-top: 4px solid var(--card-border-top); /* 标志性的顶部粗线 */
-            padding: 8px 0;
-            margin-bottom: 10px;
+            /* TechURLs 标志性的顶部粗线 */
+            border-top: 4px solid #333;
+            padding: 6px 0;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
@@ -78,22 +82,19 @@
 
         .site-name {
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14px;
             text-transform: uppercase;
             color: #000;
             text-decoration: none;
         }
 
-        .site-name:hover {
-            color: var(--link-color);
-        }
-
         .site-domain {
-            font-size: 11px;
+            font-size: 10px;
             color: #999;
+            text-transform: lowercase;
         }
 
-        /* 5. 文章列表 */
+        /* 文章列表 */
         .article-list {
             list-style: none;
             padding: 0;
@@ -101,122 +102,91 @@
         }
 
         .article-item {
-            margin-bottom: 7px;
+            margin-bottom: 5px;
             display: flex;
-            line-height: 1.4;
+            line-height: 1.3;
+            align-items: flex-start;
+        }
+
+        .time-badge {
+            font-size: 10px;
+            color: #999;
+            min-width: 30px;
+            margin-right: 8px;
+            padding-top: 2px;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .article-link {
             text-decoration: none;
             color: var(--link-color);
-            word-break: break-word;
         }
 
         .article-link:hover {
             text-decoration: underline;
-            background-color: #f0f7ff;
         }
 
-        .time-badge {
-            font-size: 11px;
-            color: #888;
-            min-width: 35px;
-            margin-right: 10px;
-            padding-top: 2px;
-            font-family: monospace;
-        }
-
-        /* 页脚 */
-        footer {
+        /* 加载中状态 */
+        #loading {
             text-align: center;
-            padding: 40px;
-            color: #999;
-            font-size: 12px;
-            border-top: 1px solid var(--border-color);
+            padding: 50px;
+            font-style: italic;
+            color: #666;
         }
 
+        @media (max-width: 600px) {
+            .main-container { padding: 10px; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>TECHURLS</h1>
+    <h1 onclick="window.location.reload()">TECHURLS</h1>
     <div class="nav-links">
-        <a href="#">DEVURLS</a>
-        <a href="#">SCIURLS</a>
-        <a href="#">FINURLS</a>
+        <a href="#">Github</a>
+        <a href="#">About</a>
     </div>
 </header>
 
-<div class="main-container" id="content-grid">
-    </div>
-
-<footer>
-    &copy; 2024 TechURLs Clone - 自动聚合技术资讯
-</footer>
+<div id="loading">正在获取最新资讯...</div>
+<div class="main-container" id="content-grid"></div>
 
 <script>
-    // 模拟从你的爬虫 data.json 加载的数据
-    const data = [
-        {
-            source: "Hacker News",
-            domain: "ycombinator.com",
-            articles: [
-                { title: "The architecture of Uber's API gateway", link: "#", time: "2h" },
-                { title: "Llama 3.1: The open-source standard", link: "#", time: "5h" },
-                { title: "Why SQLite is all you need for small projects", link: "#", time: "8h" },
-                { title: "Building a 16-bit computer in Excel", link: "#", time: "12h" }
-            ]
-        },
-        {
-            source: "GitHub Trending",
-            domain: "github.com",
-            articles: [
-                { title: "microsoft/autogen: Next-gen AI agents framework", link: "#", time: "1d" },
-                { title: "valtown/val: Write and deploy small TS scripts", link: "#", time: "1d" },
-                { title: "tldraw/tldraw: A very good whiteboard tool", link: "#", time: "2d" }
-            ]
-        },
-        {
-            source: "The Verge",
-            domain: "theverge.com",
-            articles: [
-                { title: "Apple's new iPad Pro is impossibly thin", link: "#", time: "30m" },
-                { title: "Google Search is officially a monopoly, judge rules", link: "#", time: "4h" },
-                { title: "The best OLED monitors you can buy right now", link: "#", time: "10h" }
-            ]
-        },
-        {
-            source: "Ars Technica",
-            domain: "arstechnica.com",
-            articles: [
-                { title: "Boeing Starliner's return delayed again", link: "#", time: "1h" },
-                { title: "Review: The M4 iPad Pro is a beast", link: "#", time: "6h" }
-            ]
-        }
-    ];
-
-    function render() {
+    async function loadNews() {
         const grid = document.getElementById('content-grid');
-        grid.innerHTML = data.map(site => `
-            <div class="site-column">
-                <div class="site-header">
-                    <a href="#" class="site-name">${site.source}</a>
-                    <span class="site-domain">${site.domain}</span>
+        const loader = document.getElementById('loading');
+        
+        try {
+            // 使用相对路径从 data/data.json 加载数据
+            const response = await fetch('./data/data.json');
+            if (!response.ok) throw new Error('Data not found');
+            const data = await response.json();
+            
+            loader.style.display = 'none';
+            grid.innerHTML = data.map(site => `
+                <div class="site-column">
+                    <div class="site-header">
+                        <a href="${site.url || '#'}" class="site-name">${site.source}</a>
+                        <span class="site-domain">${site.domain || ''}</span>
+                    </div>
+                    <ul class="article-list">
+                        ${site.articles.map(art => `
+                            <li class="article-item">
+                                <span class="time-badge">${art.time || 'now'}</span>
+                                <a href="${art.link}" class="article-link" target="_blank" rel="noopener">${art.title}</a>
+                            </li>
+                        `).join('')}
+                    </ul>
                 </div>
-                <ul class="article-list">
-                    ${site.articles.map(art => `
-                        <li class="article-item">
-                            <span class="time-badge">${art.time}</span>
-                            <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
-                        </li>
-                    `).join('')}
-                </ul>
-            </div>
-        `).join('');
+            `).join('');
+        } catch (e) {
+            loader.innerHTML = "无法加载数据，请检查 data/data.json 是否存在且格式正确。";
+            console.error(e);
+        }
     }
 
-    render();
+    window.onload = loadNews;
 </script>
 
 </body>
