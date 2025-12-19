@@ -14,16 +14,14 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 0;
-            line-height: 1.4;
             font-size: 13px;
         }
 
-        /* 顶部导航与强制同步 */
+        /* 顶部导航 */
         header {
             background: var(--header);
             color: white;
@@ -37,49 +35,22 @@
             height: 50px;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        header h1 { font-size: 16px; margin: 0; cursor: pointer; font-weight: 900; letter-spacing: 1px; }
+
+        /* 强制同步文字按钮 */
+        .sync-text-btn { 
+            font-size: 11px; color: #aaa; cursor: pointer; 
+            border: 1px solid #444; padding: 3px 8px; border-radius: 3px;
+        }
+        .sync-text-btn:hover { color: #fff; background: #333; }
+
+        #search-input { 
+            background: #333; border: 1px solid #444; color: #fff; 
+            padding: 6px 12px; font-size: 12px; border-radius: 4px; width: 180px; outline: none; 
         }
 
-        header h1 {
-            font-size: 16px;
-            margin: 0;
-            cursor: pointer;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        .sync-text-btn {
-            font-size: 11px;
-            color: #aaa;
-            cursor: pointer;
-            border: 1px solid #444;
-            padding: 3px 10px;
-            border-radius: 3px;
-            transition: all 0.2s;
-            text-transform: uppercase;
-        }
-
-        .sync-text-btn:hover {
-            color: #fff;
-            border-color: #777;
-            background: #333;
-        }
-
-        #search-input {
-            background: #333;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 12px;
-            border-radius: 4px;
-            width: 180px;
-            outline: none;
-        }
-
-        /* 主容器布局 (3列) */
+        /* 布局 */
         .main-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -89,7 +60,7 @@
             margin: 0 auto;
         }
 
-        /* 站点卡片：高度锁定 400px */
+        /* 卡片容器：高度锁定 400px */
         .site-column {
             border-top: 5px solid var(--border);
             padding-top: 12px;
@@ -99,70 +70,35 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .site-header {
-            flex: 0 0 auto;
-            padding: 0 10px 10px;
-        }
+        .site-header { flex: 0 0 auto; padding: 0 10px 10px; }
+        .site-name { font-weight: 900; font-size: 14px; text-transform: uppercase; color: #000; text-decoration: none; }
 
-        .site-name {
-            font-weight: 900;
-            font-size: 14px;
-            text-transform: uppercase;
-            color: #000;
-            text-decoration: none;
-        }
-
-        /* 内部新闻列表：始终允许独立滚动 */
+        /* 列表容器 */
         .article-list {
             list-style: none;
             padding: 0 10px;
             margin: 0;
             flex: 1 1 auto;
             overflow-y: auto;
-            overflow-x: hidden;
             scrollbar-width: thin;
         }
-
         .article-list::-webkit-scrollbar { width: 4px; }
         .article-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
 
-        .article-item {
-            margin-bottom: 9px;
-            display: flex;
-            align-items: flex-start;
-        }
+        .article-item { margin-bottom: 9px; display: flex; align-items: flex-start; }
+        .extra-item { display: none; } 
 
-        .extra-item {
-            display: none; /* 初始隐藏超过 20 条的内容 */
-        }
+        .time-badge { font-size: 10px; color: #999; min-width: 40px; font-family: monospace; }
+        .article-link { text-decoration: none; color: var(--link); line-height: 1.4; }
 
-        .time-badge {
-            font-size: 10px;
-            color: #999;
-            min-width: 40px;
-            font-family: monospace;
-            padding-top: 2px;
-        }
-
-        .article-link {
-            text-decoration: none;
-            color: var(--link);
-            line-height: 1.4;
-        }
-
-        .article-link:hover { text-decoration: underline; }
-
-        /* Show More 覆盖层：默认隐藏 */
+        /* Show More 覆盖层：点击触发后通过 .show-persist 保持显示 */
         .show-more-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             height: 60px;
-            background: linear-gradient(transparent, rgba(255,255,255,0.95) 70%);
+            background: linear-gradient(transparent, rgba(255,255,255,0.98) 70%);
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -172,8 +108,9 @@
             transition: opacity 0.3s;
         }
 
-        /* 触底后激活显示按钮 */
-        .site-column.reached-bottom .show-more-overlay {
+        /* 触发显示状态：触底激活 或 已点击加载过 */
+        .site-column.reached-bottom .show-more-overlay,
+        .site-column.show-persist .show-more-overlay {
             opacity: 1;
             pointer-events: auto;
         }
@@ -190,11 +127,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .show-more-btn:hover { background: #333; }
-
         @media (max-width: 1050px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } }
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -210,8 +144,8 @@
 <div class="main-container" id="content-grid"></div>
 
 <script>
-    const INITIAL_COUNT = 20; // 初始加载 20 条，确保填满并可滚动
-    const INCREMENT = 10;    // 点击后增加 10 条
+    const INITIAL_COUNT = 20; // 初始加载 20 条
+    const INCREMENT = 10;    // 之后每次点击增加 10 条
 
     async function syncData() {
         const btn = document.getElementById('sync-btn');
@@ -238,13 +172,13 @@
                             <li class="article-item ${i >= INITIAL_COUNT ? 'extra-item' : ''}" 
                                 style="${i >= INITIAL_COUNT ? 'display:none' : 'display:flex'}">
                                 <span class="time-badge">${art.time || '1h'}</span>
-                                <a href="${art.link}" class="article-link" target="_blank" rel="noopener">${art.title}</a>
+                                <a href="${art.link}" class="article-link" target="_blank">${art.title}</a>
                             </li>
                         `).join('')}
                     </ul>
                     ${hasMore ? `
                     <div class="show-more-overlay" id="overlay-${index}">
-                        <button class="show-more-btn" onclick="loadMore(${index})">LOAD MORE +10</button>
+                        <button class="show-more-btn" onclick="loadMore(${index})">SHOW MORE +10</button>
                     </div>` : ''}
                 </div>
                 `;
@@ -252,39 +186,39 @@
 
             setupSearch();
         } catch (e) {
-            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:100px;">无法加载数据，请检查 data.json 路径。</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:100px;">数据同步失败。</div>`;
         }
     }
 
-    // 处理滚动：检测列表是否滚动到底部
+    // 滚动监听
     window.handleScroll = function(listEl, index) {
         const col = document.getElementById(`col-${index}`);
-        if (col.classList.contains('all-loaded')) return;
+        if (col.classList.contains('all-loaded') || col.classList.contains('show-persist')) return;
 
-        // scrollHeight (总高) - scrollTop (已滚高) - clientHeight (容器高)
         const scrollBottom = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight;
-        
-        // 距离底部小于 10 像素时，显示“加载更多”按钮
+        // 距离底部 10px 时触发显示
         if (scrollBottom < 10) {
             col.classList.add('reached-bottom');
         }
     };
 
-    // 增量加载逻辑
+    // 加载更多：点击后使按钮始终显示
     window.loadMore = function(index) {
         const col = document.getElementById(`col-${index}`);
+        
+        // 核心改动：一旦点击过，添加 show-persist 类，让 overlay 的 opacity 始终为 1
+        col.classList.add('show-persist');
+
         let visibleCount = parseInt(col.getAttribute('data-visible')) + INCREMENT;
         const items = col.querySelectorAll('.article-item');
         
         col.setAttribute('data-visible', visibleCount);
         
         items.forEach((item, i) => {
-            if (i < visibleCount) {
-                item.style.display = 'flex';
-            }
+            if (i < visibleCount) item.style.display = 'flex';
         });
 
-        // 如果全部条目已显示，移除按钮
+        // 如果真的到头了，才彻底移除
         if (visibleCount >= items.length) {
             col.classList.add('all-loaded');
             const overlay = document.getElementById(`overlay-${index}`);
@@ -300,7 +234,7 @@
                 const isMatch = item.innerText.toLowerCase().includes(val);
                 item.style.display = isMatch ? 'flex' : 'none';
             });
-            // 搜索时隐藏加载按钮
+            // 搜索时临时隐藏 overlay
             document.querySelectorAll('.show-more-overlay').forEach(el => {
                 el.style.opacity = val.length > 0 ? "0" : "";
             });
