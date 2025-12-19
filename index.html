@@ -79,7 +79,7 @@
             outline: none;
         }
 
-        /* 主容器布局 */
+        /* 主容器布局 (3列) */
         .main-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -126,7 +126,6 @@
             scrollbar-width: thin;
         }
 
-        /* 滚动条美化 */
         .article-list::-webkit-scrollbar { width: 4px; }
         .article-list::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
 
@@ -137,7 +136,7 @@
         }
 
         .extra-item {
-            display: none; /* 初始隐藏超过 10 条的内容 */
+            display: none; /* 初始隐藏超过 20 条的内容 */
         }
 
         .time-badge {
@@ -154,11 +153,9 @@
             line-height: 1.4;
         }
 
-        .article-link:hover {
-            text-decoration: underline;
-        }
+        .article-link:hover { text-decoration: underline; }
 
-        /* Show More 覆盖层：初始透明不可见 */
+        /* Show More 覆盖层：默认隐藏 */
         .show-more-overlay {
             position: absolute;
             bottom: 0;
@@ -193,21 +190,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .show-more-btn:hover {
-            background: #333;
-        }
+        .show-more-btn:hover { background: #333; }
 
-        /* 响应式调整 */
-        @media (max-width: 1050px) {
-            .main-container { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 650px) {
-            .main-container { grid-template-columns: 1fr; padding: 15px; }
-            .site-column { height: 380px; }
-            #search-input { width: 130px; }
-        }
-
+        @media (max-width: 1050px) { .main-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { .main-container { grid-template-columns: 1fr; } }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -221,14 +207,12 @@
     <input type="text" id="search-input" placeholder="搜索关键词...">
 </header>
 
-<div class="main-container" id="content-grid">
-    </div>
+<div class="main-container" id="content-grid"></div>
 
 <script>
-    const INITIAL_COUNT = 10;
-    const INCREMENT = 10;
+    const INITIAL_COUNT = 20; // 初始加载 20 条，确保填满并可滚动
+    const INCREMENT = 10;    // 点击后增加 10 条
 
-    // 强制同步逻辑
     async function syncData() {
         const btn = document.getElementById('sync-btn');
         btn.innerText = "同步中...";
@@ -236,13 +220,10 @@
         btn.innerText = "强制同步数据";
     }
 
-    // 加载并渲染数据
     async function loadData() {
         const grid = document.getElementById('content-grid');
         try {
-            // 使用随机参数绕过缓存
             const response = await fetch(`./data/data.json?nocache=${Date.now()}`);
-            if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
             grid.innerHTML = data.map((site, index) => {
@@ -271,20 +252,19 @@
 
             setupSearch();
         } catch (e) {
-            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:100px;color:#999;">数据同步失败，请检查 data.json 是否在正确目录。</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:100px;">无法加载数据，请检查 data.json 路径。</div>`;
         }
     }
 
-    // 监听列表滚动：检测是否触底
+    // 处理滚动：检测列表是否滚动到底部
     window.handleScroll = function(listEl, index) {
         const col = document.getElementById(`col-${index}`);
-        // 如果已经加载全部，则不显示按钮
         if (col.classList.contains('all-loaded')) return;
 
-        // 计算当前滚动位置
+        // scrollHeight (总高) - scrollTop (已滚高) - clientHeight (容器高)
         const scrollBottom = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight;
         
-        // 距离底部小于 10px 时显示按钮，且此后一直显示
+        // 距离底部小于 10 像素时，显示“加载更多”按钮
         if (scrollBottom < 10) {
             col.classList.add('reached-bottom');
         }
@@ -298,14 +278,13 @@
         
         col.setAttribute('data-visible', visibleCount);
         
-        // 解锁对应范围的条目
         items.forEach((item, i) => {
             if (i < visibleCount) {
                 item.style.display = 'flex';
             }
         });
 
-        // 如果全部内容已展示
+        // 如果全部条目已显示，移除按钮
         if (visibleCount >= items.length) {
             col.classList.add('all-loaded');
             const overlay = document.getElementById(`overlay-${index}`);
@@ -313,7 +292,6 @@
         }
     };
 
-    // 搜索过滤逻辑
     function setupSearch() {
         const input = document.getElementById('search-input');
         input.oninput = (e) => {
@@ -322,14 +300,13 @@
                 const isMatch = item.innerText.toLowerCase().includes(val);
                 item.style.display = isMatch ? 'flex' : 'none';
             });
-            // 搜索时自动隐藏加载按钮，保持界面清爽
+            // 搜索时隐藏加载按钮
             document.querySelectorAll('.show-more-overlay').forEach(el => {
                 el.style.opacity = val.length > 0 ? "0" : "";
             });
         };
     }
 
-    // 页面启动
     loadData();
 </script>
 </body>
